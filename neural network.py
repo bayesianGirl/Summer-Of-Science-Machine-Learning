@@ -67,91 +67,93 @@ del(weights)
 for it in range(0,len(weights_total)):
 	print(weights_total[it])
 ac=[]
-for i in range(0, len(features[i])):
-	# Forward Propagation
-	total_units=[]
-	z=[]
-	ac=features[i]
-	for l in range(0,L+1):
-		units=[]
-		z_temp=[]
-		for num in range(0,activation[l]):
-			h=0.0
-			for w in range(0,len(weights_total[l][num])):
-				h=h+weights_total[l][num][w]*float(ac[w])
-			z_temp.append(h)
-			h= sigmoid(h)
-			units.append(h)
-		if(l!=L):
-			units.insert(0, 1)
-		ac=units
-		total_units.append(units)
-		z.append(z_temp)
-		del(units)
-		del(z_temp)
-	#calculating cost
-	cost=0.0
-	if (float(labels[i])==0):
-		try:
-			ans= math.log(1-h)
-		except ValueError:
-		 	ans = float('inf')
-	cost =cost- ans
-	if(float(labels[i])==1):
-		try:
-			ans= math.log(h)
-		except ValueError:
-		 	ans = float('inf')
-	cost =cost- ans
-	print("cost", cost)
-	#Backpropagation
-	print(total_units)
-	error=[]
-	error.append(total_units[L][0]-float(labels[i]))
-	print(error)
-	for r in range(0,L):
-		s=[]
-		sig_der=[]
-		final_error=[]
-		final_product=[]
-		#print("total", total_units[r])
-		sig_der.append(SigmoidDerivative(1))
-		for d in range(0,len(z[L-r-1])):
-				sig_der.append(SigmoidDerivative(z[L-1-r][d]))
-		print("weights",weights_total[L-r])
-		if(len(error)==1):
-			prod=numpy.dot(weights_total[L-r], error[0])
-		else:
-			print("yes")
-			error=numpy.delete(error, 0,0)
-			prod=numpy.dot( error,weights_total[L-r])
-		print("error",error)
-		print("prod", prod)
-		print("derivative", sig_der)
-		for t in range(0, len(prod)):
+for iterations in range(0,30):
+	for i in range(0, len(features[i])):
+		# Forward Propagation
+		cost=0.0
+		total_units=[]
+		z=[]
+		ac=features[i]
+		for l in range(0,L+1):
+			units=[]
+			z_temp=[]
+			for num in range(0,activation[l]):
+				h=0.0
+				for w in range(0,len(weights_total[l][num])):
+					h=h+weights_total[l][num][w]*float(ac[w])
+				z_temp.append(h)
+				h= sigmoid(h)
+				units.append(h)
+			if(l!=L):
+				units.insert(0, 1)
+			ac=units
+			total_units.append(units)
+			z.append(z_temp)
+			del(units)
+			del(z_temp)
+		#calculating cost
+		if (float(labels[i])==0):
 			try:
-				length= len(prod[t])
-			except TypeError:
-   		 		length=1
-			if(length>1):
-				for u in range(0,len(prod[t])):
-					final_error.append(prod[t][u]*sig_der[t])
-			if(length==1):
-				final_error.append(prod[t]*sig_der[t])
-		print(final_error)
-		print("total",total_units[L-r-1])
-		if(len(error)==1):
-			for u in range(0,len(final_error)):
-				print("yesy")
-				final_product.append(final_error[u]*total_units[L-r-1][u])
-		else:
-			final_product=multiply_two_vectors(final_error,total_units[L-r-1])
-		print("final product", final_product)
-		we= numpy.array(weights_total[L-r])
-		f=numpy.array(final_product)
-		we=we-f
-		error=final_error
-		del(sig_der)
-		del(final_error)
-		del(final_product)
+				ans= math.log(1-h)
+			except ValueError:
+			 	ans = float('inf')
+		cost =cost- ans
+		if(float(labels[i])==1):
+			try:
+				ans= math.log(h)
+			except ValueError:
+			 	ans = float('inf')
+		cost =cost- ans
+		print("cost", cost)
+		#Backpropagation
+		#print(total_units)
+		error=[]
+		error.append(total_units[L][0]-float(labels[i]))
+		#print(error)
+		for r in range(0,L):
+			s=[]
+			sig_der=[]
+			final_error=[]
+			final_product=[]
+			#print("total", total_units[r])
+			sig_der.append(SigmoidDerivative(1))
+			for d in range(0,len(z[L-r-1])):
+					sig_der.append(SigmoidDerivative(z[L-1-r][d]))
+			#print("weights",weights_total[L-r])
+			if(len(error)==1):
+				prod=numpy.dot(weights_total[L-r], error[0])
+			else:
+				#print("yes")
+				error=numpy.delete(error, 0,0)
+				prod=numpy.dot( error,weights_total[L-r])
+			#print("error",error)
+			#print("prod", prod)
+			#print("derivative", sig_der)
+			for t in range(0, len(prod)):
+				try:
+					length= len(prod[t])
+				except TypeError:
+	   		 		length=1
+				if(length>1):
+					for u in range(0,len(prod[t])):
+						final_error.append(prod[t][u]*sig_der[t])
+				if(length==1):
+					final_error.append(prod[t]*sig_der[t])
+			#print(final_error)
+			#print("total",total_units[L-r-1])
+			if(len(error)==1):
+				for u in range(0,len(final_error)):
+					#print("yesy")
+					final_product.append(final_error[u]*total_units[L-r-1][u])
+			else:
+				final_product=multiply_two_vectors(final_error,total_units[L-r-1])
+			#print("final product", final_product)
+			we= numpy.array(weights_total[L-r])
+			f=numpy.array(final_product)
+			we=we-f
+			weights_total[L-r]=we
+			error=final_error
+			del(sig_der)
+			del(final_error)
+			del(final_product)
 

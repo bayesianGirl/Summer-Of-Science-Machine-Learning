@@ -5,11 +5,11 @@ import random
 #Number of clusters=3
 
 def min(point1, point2, point3):
-	if ((point1<point2 & point1<point3) || (point1==point2 & point1<point3)||(point1==point3 & point1<point2) ):
+	if ((point1<point2 & point1<point3) or (point1==point2 & point1<point3) or (point1==point3 & point1<point2) ):
 		return 1
-	if (point2<point1 & point2<point3|| (point1==point2 & point2<point3)||(point2==point3 & point2<point1))
+	if (point2<point1 & point2<point3 or (point1==point2 & point2<point3) or (point2==point3 & point2<point1))
 		return 2
-	if (point3<point1 & point3<point1|| (point3==point2 & point3<point1)||(point3==point1 & point3<point2))
+	if (point3<point1 & point3<point1 or (point3==point2 & point3<point1) or (point3==point1 & point3<point2))
 		return 3
 
 #initialsing cluster centroids

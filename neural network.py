@@ -18,6 +18,7 @@ def multiply_two_vectors(v1,v2):
 		product.append(prod)
 		del(prod)
 	return product
+
 file_name = "data.txt"
 file = open(file_name, "r")
 content = file.readlines()
@@ -66,7 +67,7 @@ del(weights)
 for it in range(0,len(weights_total)):
 	print(weights_total[it])
 ac=[]
-for i in range(0, 1):
+for i in range(0, len(features[i])):
 	# Forward Propagation
 	total_units=[]
 	z=[]
@@ -146,12 +147,11 @@ for i in range(0, 1):
 		else:
 			final_product=multiply_two_vectors(final_error,total_units[L-r-1])
 		print("final product", final_product)
-		#we= numpy.array(weights_total[L-r])
-		#f=numpy.array(final_product)
-		#we=we-f
+		we= numpy.array(weights_total[L-r])
+		f=numpy.array(final_product)
+		we=we-f
 		error=final_error
 		del(sig_der)
 		del(final_error)
 		del(final_product)
-
 

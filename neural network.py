@@ -6,6 +6,7 @@ import random
 def sigmoid(x):
 	ans = math.exp(-x)
 	return(1/(1+ans))
+
 def SigmoidDerivative(x):
 	return math.exp(-x)/((1+math.exp(-x))**2)
 
@@ -18,7 +19,7 @@ def multiply_two_vectors(v1,v2):
 		product.append(prod)
 		del(prod)
 	return product
-
+errorfile= open("error.dat", "w")
 file_name = "data.txt"
 file = open(file_name, "r")
 content = file.readlines()
@@ -64,11 +65,11 @@ weights.append(temp_weights)
 weights_total.append(weights)
 del(temp_weights)
 del(weights)
-for it in range(0,len(weights_total)):
-	print(weights_total[it])
 ac=[]
-for iterations in range(0,30):
-	for i in range(0, len(features[i])):
+learning_rate=0.6
+epochs=0
+while(True):
+	for i in range(0, len(features)):
 		# Forward Propagation
 		cost=0.0
 		total_units=[]
@@ -80,6 +81,7 @@ for iterations in range(0,30):
 			for num in range(0,activation[l]):
 				h=0.0
 				for w in range(0,len(weights_total[l][num])):
+					#print(weights_total[l][num])
 					h=h+weights_total[l][num][w]*float(ac[w])
 				z_temp.append(h)
 				h= sigmoid(h)
@@ -105,6 +107,8 @@ for iterations in range(0,30):
 			 	ans = float('inf')
 		cost =cost- ans
 		print("cost", cost)
+		errorfile.write(str(cost))
+		errorfile.write("\n")
 		#Backpropagation
 		#print(total_units)
 		error=[]
@@ -118,12 +122,12 @@ for iterations in range(0,30):
 			#print("total", total_units[r])
 			sig_der.append(SigmoidDerivative(1))
 			for d in range(0,len(z[L-r-1])):
-					sig_der.append(SigmoidDerivative(z[L-1-r][d]))
+					sig_der.append(SigmoidDerivative(z[L-r-1][d]))
 			#print("weights",weights_total[L-r])
 			if(len(error)==1):
+				#print("yes")
 				prod=numpy.dot(weights_total[L-r], error[0])
 			else:
-				#print("yes")
 				error=numpy.delete(error, 0,0)
 				prod=numpy.dot( error,weights_total[L-r])
 			#print("error",error)
@@ -139,21 +143,13 @@ for iterations in range(0,30):
 						final_error.append(prod[t][u]*sig_der[t])
 				if(length==1):
 					final_error.append(prod[t]*sig_der[t])
-			#print(final_error)
-			#print("total",total_units[L-r-1])
-			if(len(error)==1):
-				for u in range(0,len(final_error)):
-					#print("yesy")
-					final_product.append(final_error[u]*total_units[L-r-1][u])
-			else:
-				final_product=multiply_two_vectors(final_error,total_units[L-r-1])
-			#print("final product", final_product)
-			we= numpy.array(weights_total[L-r])
-			f=numpy.array(final_product)
-			we=we-f
-			weights_total[L-r]=we
+			size = numpy.shape(weights_total[L-r])
+			for ze in range(0, size[0]):
+				for p in range(0, len(total_units[L-r-1])):
+					weights_total[L-r][ze][p]= weights_total[L-r][ze][p]- learning_rate*final_error[p]*total_units[L-r-1][p]
 			error=final_error
 			del(sig_der)
 			del(final_error)
-			del(final_product)
+			epochs=epochs+1
+		print("Number of iterations",epochs)
 

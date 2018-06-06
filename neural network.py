@@ -10,15 +10,6 @@ def sigmoid(x):
 def SigmoidDerivative(x):
 	return math.exp(-x)/((1+math.exp(-x))**2)
 
-def multiply_two_vectors(v1,v2):
-	product=[]
-	for i in range(0, len(v1)):
-		prod=[]
-		for j in range(0,len(v2)):
-			prod.append(v1[i]*v2[j])
-		product.append(prod)
-		del(prod)
-	return product
 errorfile= open("error.dat", "w")
 file_name = "data.txt"
 file = open(file_name, "r")

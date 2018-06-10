@@ -121,9 +121,6 @@ while(True):
 			else:
 				error=numpy.delete(error, 0,0)
 				prod=numpy.dot( error,weights_total[L-r])
-			#print("error",error)
-			#print("prod", prod)
-			#print("derivative", sig_der)
 			for t in range(0, len(prod)):
 				try:
 					length= len(prod[t])

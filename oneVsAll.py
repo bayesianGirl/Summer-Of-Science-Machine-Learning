@@ -3,9 +3,8 @@ import os
 import math
 
 def sigmoid(x):
-	try:
-		ans = math.exp(-x)
-		return 1/(1+ans)
+	ans = math.exp(-x)
+	return 1/(1+ans)
 
 #Number of classes = K
 #read features

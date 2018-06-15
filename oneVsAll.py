@@ -23,7 +23,7 @@ for line in content:
 	labels.append(float(a))
 	features.append(x)
 	del (x)
-#Final Weights
+#FinalWeights
 final_weights=[]
 #Applying one VS all
 for k in range(0,K):

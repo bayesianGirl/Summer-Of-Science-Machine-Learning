@@ -69,7 +69,7 @@ for iter in range(0,150):
 	for i3 in range(0, len(cluster3_points)):
 		cost3= sum((sum3-cluster3_points[i3])**2)
 	print("cost", cost1+cost2+cost3)
-	#updating centroids
+	#updatingcentroids
 	centroid_1= sum1
 	centroid_2=sum2
 	centroid_3=sum3

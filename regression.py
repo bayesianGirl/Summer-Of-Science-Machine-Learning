@@ -1,7 +1,6 @@
 import numpy
 import os
 
-#unvectorised implementation
 file_name= "new_data.txt"
 file = open(file_name, "r")
 content= file.readlines()
